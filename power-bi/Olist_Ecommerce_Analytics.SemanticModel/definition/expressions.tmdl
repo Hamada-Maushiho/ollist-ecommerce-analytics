@@ -1,0 +1,10 @@
+expression 'analytics dim_geography' =
+		let
+		  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+		  #"Navigation 1" = Source{[Schema = "analytics", Item = "dim_geography"]}[Data]
+		in
+		  #"Navigation 1"
+	lineageTag: 173272a9-eff4-4ffd-a931-cfdef50a5999
+
+	annotation PBI_ResultType = Table
+

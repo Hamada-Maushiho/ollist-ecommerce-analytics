@@ -1,0 +1,38 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-ID
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["analytics dim_customers","analytics dim_date","analytics dim_geography","analytics dim_payment_type","analytics dim_products","analytics dim_sellers","analytics fact_order_items","analytics fact_orders","analytics fact_payments","analytics fact_reviews","analytics dim_customer_geography","analytics dim_seller_geography"]
+
+annotation PBI_RemovedChildren = [{"remoteItemId":{"foreignKeyRelationship":{"fromTableLocalLineageTag":"c473407e-80dc-4f9d-81cf-64ec052b1a69","fromColumnLocalLineageTag":"bf180491-0416-4487-b0c5-2086c280235c","toTableLocalLineageTag":"2d5835df-8916-488b-9d3e-8621d66fa51c","toColumnLocalLineageTag":"8bf04ae3-e2f5-49a4-9cd2-337abd204d79"}},"objectType":"Relationship"}]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'analytics dim_customers'
+ref table 'analytics dim_date'
+ref table DateTableTemplate_f9cd05f2-3a79-40ff-b2ee-a0636d2618bc
+ref table LocalDateTable_3c694cc9-9af4-463e-85c6-e37f168dafb0
+ref table 'analytics dim_payment_type'
+ref table 'analytics dim_products'
+ref table 'analytics dim_sellers'
+ref table 'analytics fact_order_items'
+ref table 'analytics fact_orders'
+ref table 'analytics fact_payments'
+ref table 'analytics fact_reviews'
+ref table LocalDateTable_52e47de1-bc63-4445-8d2b-494be792b582
+ref table LocalDateTable_e51e0adb-195d-4288-abe1-ee9bdbce2f29
+ref table 'analytics dim_customer_geography'
+ref table 'analytics dim_seller_geography'
+ref table Customer_Segmentation
+ref table Customer_Acquisition
+ref table LocalDateTable_c989d43a-031c-47f3-8222-d157a54276d0
+
+ref cultureInfo en-US
+

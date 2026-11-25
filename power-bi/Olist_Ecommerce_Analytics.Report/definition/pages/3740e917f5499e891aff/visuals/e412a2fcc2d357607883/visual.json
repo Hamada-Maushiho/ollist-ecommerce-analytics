@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "e412a2fcc2d357607883",
+  "position": {
+    "x": 1281.3337533622507,
+    "y": 381.88770688443554,
+    "z": 30007,
+    "height": 208,
+    "width": 612,
+    "tabOrder": 30007
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "analytics dim_seller_geography"
+                    }
+                  },
+                  "Property": "state"
+                }
+              },
+              "queryRef": "analytics dim_seller_geography.state",
+              "nativeQueryRef": "state",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "analytics fact_order_items"
+                    }
+                  },
+                  "Property": "Total GMV"
+                }
+              },
+              "queryRef": "analytics fact_order_items.Total GMV",
+              "nativeQueryRef": "Total GMV"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "analytics fact_order_items"
+                  }
+                },
+                "Property": "Total GMV"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "5db45895738628fb08e3",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "analytics dim_seller_geography"
+              }
+            },
+            "Property": "state"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "06003b646db6466ed8ff",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "analytics fact_order_items"
+              }
+            },
+            "Property": "Total GMV"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

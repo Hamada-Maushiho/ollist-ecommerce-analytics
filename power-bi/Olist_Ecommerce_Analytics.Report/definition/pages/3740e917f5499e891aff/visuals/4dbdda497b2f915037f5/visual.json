@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "4dbdda497b2f915037f5",
+  "position": {
+    "x": 564,
+    "y": 278,
+    "z": 1009,
+    "width": 256,
+    "height": 76,
+    "tabOrder": 1009
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "analytics fact_order_items"
+                    }
+                  },
+                  "Property": "Total GMV"
+                }
+              },
+              "queryRef": "analytics fact_order_items.Total GMV",
+              "nativeQueryRef": "Total GMV"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "analytics fact_order_items"
+                  }
+                },
+                "Property": "Total GMV"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,153 @@
+table 'analytics fact_reviews'
+	lineageTag: b9080f46-9ae1-4437-9338-5c919a41dac5
+
+	measure 'Average Review Score' = ```
+			
+			AVERAGE('analytics fact_reviews'[review_score])
+			
+			```
+		lineageTag: 5623df3c-1fe6-40ae-8453-73b7af58cb0d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Reviews' =
+			
+			COUNTROWS('analytics fact_reviews')
+		formatString: 0
+		lineageTag: c601632d-c4d3-44d4-9464-0baaa0e4528b
+
+	column review_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 920acfb0-d0d3-4105-802b-f5ddf1544c74
+		summarizeBy: sum
+		sourceColumn: review_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_id
+		dataType: string
+		lineageTag: 9817f893-f4b3-43c3-8158-1539384e6dd4
+		summarizeBy: none
+		sourceColumn: review_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 628551b8-a95b-419c-8671-cb1538ce4265
+		summarizeBy: none
+		sourceColumn: order_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 468f2928-1404-478e-aaae-7e92493af450
+		summarizeBy: sum
+		sourceColumn: review_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_answer_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: f25f6bb2-5ab7-4bbe-a40e-2feb385a6ca6
+		summarizeBy: sum
+		sourceColumn: review_answer_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 692a9430-2af5-476a-8ac6-b94734044316
+		summarizeBy: sum
+		sourceColumn: review_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_comment_title
+		dataType: string
+		lineageTag: 408b4576-84fa-43da-80d1-03d9aeb5b396
+		summarizeBy: none
+		sourceColumn: review_comment_title
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_comment_message
+		dataType: string
+		lineageTag: c307794f-fe1e-4dcb-a9ba-6c600a8e9813
+		summarizeBy: none
+		sourceColumn: review_comment_message
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_creation_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 098be8ad-f016-46bd-926f-34c1163bf8bd
+		summarizeBy: none
+		sourceColumn: review_creation_date
+
+		variation Variation
+			isDefault
+			relationship: 40d66d32-27ae-4f20-bf1d-d60841200f4f
+			defaultHierarchy: LocalDateTable_52e47de1-bc63-4445-8d2b-494be792b582.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_answer_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d49b4c6a-0699-4bdd-a3c8-0a8030af8a07
+		summarizeBy: none
+		sourceColumn: review_answer_timestamp
+
+		variation Variation
+			isDefault
+			relationship: 334e38b1-95d6-4472-af3a-3252387bf70c
+			defaultHierarchy: LocalDateTable_e51e0adb-195d-4288-abe1-ee9bdbce2f29.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_valid_score
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 44d4b2dc-410f-4263-bf07-1cd2a8a500a1
+		summarizeBy: none
+		sourceColumn: is_valid_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_no_comment
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: af798c67-e503-4161-b6f5-995e90e3e461
+		summarizeBy: none
+		sourceColumn: has_no_comment
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_id_reused
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5d5f2ee7-3f08-4024-9eda-c8fe386cd1d8
+		summarizeBy: none
+		sourceColumn: review_id_reused
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics fact_reviews' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "fact_reviews"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

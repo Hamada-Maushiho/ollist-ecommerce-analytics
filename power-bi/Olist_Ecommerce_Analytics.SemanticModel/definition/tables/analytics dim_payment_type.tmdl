@@ -1,0 +1,31 @@
+table 'analytics dim_payment_type'
+	lineageTag: 935be051-c8a4-4cb3-a334-71bb6c859a5f
+
+	column payment_type_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 01cb5ef0-1f8b-460b-b16e-866c059dc8c8
+		summarizeBy: none
+		sourceColumn: payment_type_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_type
+		dataType: string
+		lineageTag: b5a1bd2b-d424-49c1-a0bf-6a0aa45af9ee
+		summarizeBy: none
+		sourceColumn: payment_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics dim_payment_type' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "dim_payment_type"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,193 @@
+table 'analytics fact_order_items'
+	lineageTag: e371569a-a4b6-4e25-ad37-39b951bb84e3
+
+	measure 'Total GMV' = ```
+			
+			CALCULATE(
+			    SUM('analytics fact_order_items'[price]),
+			    'analytics fact_orders'[order_status] = "delivered"
+			)
+			
+			```
+		lineageTag: fd9e6a31-62b1-4eab-950c-0e2072f626d2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Freight' = ```
+			
+			CALCULATE(
+			    SUM('analytics fact_order_items'[freight_value]),
+			    'analytics fact_orders'[order_status] = "delivered"
+			)
+			
+			```
+		lineageTag: 88a654d8-adc4-47f7-b401-d7702899b4b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Items Sold' =
+			
+			CALCULATE(
+			    COUNTROWS('analytics fact_order_items'),
+			    'analytics fact_orders'[order_status] = "delivered"
+			)
+		formatString: 0
+		lineageTag: 6137e5c5-9b13-48e4-83ef-5de806dd628c
+
+	column order_item_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 92d0d4a4-06a0-4d09-ae50-3c1c3c34e903
+		summarizeBy: sum
+		sourceColumn: order_item_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 7baef82f-c787-424f-9f89-2595231ab6b3
+		summarizeBy: none
+		sourceColumn: order_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_item_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d484f140-8b61-46b9-9c2f-0b7e5351f7f6
+		summarizeBy: sum
+		sourceColumn: order_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 85913a54-243f-41a4-a960-9661fbf198e3
+		summarizeBy: none
+		sourceColumn: product_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: ae3f9c97-6a0b-4f16-882c-5584dd69088e
+		summarizeBy: none
+		sourceColumn: seller_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 20c75f80-83a6-472f-8eee-22390877f58d
+		summarizeBy: sum
+		sourceColumn: shipping_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: double
+		lineageTag: 182d509c-e609-4606-a461-91dda2b0495c
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"analytics fact_order_items","TableItemName":"price (bins)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column freight_value
+		dataType: double
+		lineageTag: 7fa40191-ba00-46aa-a352-f346a1c175ed
+		summarizeBy: sum
+		sourceColumn: freight_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column item_total_value
+		dataType: double
+		lineageTag: 6babb69f-7bd0-4622-bcc4-28af5e3499eb
+		summarizeBy: sum
+		sourceColumn: item_total_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_valid_price
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 41f5a642-1d96-475b-90fd-6fce0d7ad8a3
+		summarizeBy: none
+		sourceColumn: is_valid_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_zero_freight
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 79637fc0-611d-4982-8249-dda79a11af8c
+		summarizeBy: none
+		sourceColumn: is_zero_freight
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'price (bins)' =
+			IF(
+				ISBLANK('analytics fact_order_items'[price]),
+				BLANK(),
+				IF(
+					'analytics fact_order_items'[price] >= 0,
+					ROUNDDOWN('analytics fact_order_items'[price] / 50, 0) * 50,
+					ROUNDUP('analytics fact_order_items'[price] / 50, 0) * 50
+				)
+			)
+		lineageTag: 623203ea-58fb-45e4-a0f4-de6319891380
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "analytics fact_order_items"
+				          }
+				        },
+				        "Property": "price"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 50.0,
+				      "unit": 0
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"a","Entity":"analytics fact_order_items"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"price"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"price"}},"Size":50.0}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'analytics fact_order_items' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "fact_order_items"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

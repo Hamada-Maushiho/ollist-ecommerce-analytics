@@ -1,0 +1,285 @@
+table 'analytics fact_orders'
+	lineageTag: 2d5835df-8916-488b-9d3e-8621d66fa51c
+
+	measure 'Total Orders' = ```
+			
+			DISTINCTCOUNT('analytics fact_orders'[order_id])
+			
+			```
+		formatString: 0
+		lineageTag: 561fd640-1b7f-452b-8478-2d2475afda48
+
+	measure 'Delivered Orders' = ```
+			
+			CALCULATE(
+			    [Total Orders],
+			    'analytics fact_orders'[order_status] = "delivered"
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 427a6dfa-4ec2-4f01-ac16-412af0cc4557
+
+	measure 'Canceled Orders' = ```
+			
+			CALCULATE(
+			    [Total Orders],
+			    'analytics fact_orders'[order_status] = "canceled"
+			)
+			
+			```
+		formatString: 0
+		lineageTag: 0a3191ec-4f75-4e69-afb5-9495c3c33fe5
+
+	measure 'Unavailable Orders' = ```
+			
+			CALCULATE(
+			    [Total Orders],
+			    'analytics fact_orders'[order_status] = "unavailable"
+			)
+			
+			```
+		formatString: 0
+		lineageTag: d286fc0f-903a-4de2-bca5-49427344a5e9
+
+	measure 'Delivered Rate' = ```
+			
+			DIVIDE(
+			    [Delivered Orders],
+			    [Total Orders],
+			    0
+			)
+			
+			```
+		lineageTag: 8a12152f-8c62-41fb-aa2b-95baee973d7a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'On-Time Delivery Rate' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        [Total Orders],
+			        'analytics fact_orders'[is_on_time] = TRUE()
+			    ),
+			    [Delivered Orders],
+			    0
+			)
+			
+			```
+		lineageTag: 7e90c19f-fbc0-4633-ab50-7c471d510e6e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Delivery Days' =
+			
+			CALCULATE(
+			    AVERAGE('analytics fact_orders'[delivery_days]),
+			    'analytics fact_orders'[order_status] = "delivered"
+			)
+		lineageTag: e3374ff8-893b-40a5-a7a7-362818a491c9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Average Delivery Delay' =
+			
+			CALCULATE(
+			    AVERAGE('analytics fact_orders'[delivery_delay_days]),
+			    'analytics fact_orders'[order_status] = "delivered"
+			)
+		lineageTag: a728201d-99b8-4192-b125-4f8ebd1ce9ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column order_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: e1d432b6-f67a-4c05-945b-66ea8daed8e9
+		summarizeBy: none
+		sourceColumn: order_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_id
+		dataType: string
+		lineageTag: 5ddb2f6c-4857-4da2-94e7-26da6935fa62
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 8bf04ae3-e2f5-49a4-9cd2-337abd204d79
+		summarizeBy: none
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: f088829f-a4b2-407a-9a81-4811fbb7588f
+		summarizeBy: none
+		sourceColumn: purchase_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column approval_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 77e532b9-6c51-4084-98a9-e573881cc87a
+		summarizeBy: sum
+		sourceColumn: approval_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column carrier_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 67a53085-8871-4c3d-a6a1-78e65f8a68e2
+		summarizeBy: sum
+		sourceColumn: carrier_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: f3394742-ed8d-4156-a5e4-5e076ec91043
+		summarizeBy: sum
+		sourceColumn: delivery_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_delivery_date_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 2128faf5-0d9e-448b-8be1-4a123c02f7b2
+		summarizeBy: sum
+		sourceColumn: estimated_delivery_date_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: 2ca1e9a7-56e0-488e-b59f-c571f93665cc
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_delivered
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 509d2ce7-877f-42cd-bb70-34046115bbcd
+		summarizeBy: none
+		sourceColumn: is_delivered
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_on_time
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c5fa30f6-2fb4-43b3-8eef-2a345d27e4ed
+		summarizeBy: none
+		sourceColumn: is_on_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f63a673-b1f4-44d4-834d-1de848442f3a
+		summarizeBy: sum
+		sourceColumn: delivery_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_delay_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a0721b5-764f-4134-9d34-599b0b60d509
+		summarizeBy: sum
+		sourceColumn: delivery_delay_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"analytics fact_orders","TableItemName":"delivery_delay_days (bins)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column carrier_before_approval
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 506f39e8-87cc-4e42-aa38-6f455a7f673b
+		summarizeBy: none
+		sourceColumn: carrier_before_approval
+
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_before_carrier
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b26b9327-b37d-4c9f-a6e0-44a08fa86a33
+		summarizeBy: none
+		sourceColumn: delivery_before_carrier
+
+		annotation SummarizationSetBy = Automatic
+
+	column missing_actual_delivery_date
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6a12f3e0-8626-4c20-b145-3ce28e9b1b7b
+		summarizeBy: none
+		sourceColumn: missing_actual_delivery_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'delivery_delay_days (bins)' =
+			IF(
+				ISBLANK('analytics fact_orders'[delivery_delay_days]),
+				BLANK(),
+				INT('analytics fact_orders'[delivery_delay_days] / 5) * 5
+			)
+		formatString: 0
+		lineageTag: 2218f445-0128-4767-a51f-4bd83413a8be
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "analytics fact_orders"
+				          }
+				        },
+				        "Property": "delivery_delay_days"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 5.0,
+				      "unit": 0
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"a","Entity":"analytics fact_orders"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"delivery_delay_days"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"a"}},"Property":"delivery_delay_days"}},"Size":5.0}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics fact_orders' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "fact_orders"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

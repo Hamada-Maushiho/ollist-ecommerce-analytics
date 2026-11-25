@@ -1,0 +1,64 @@
+table 'analytics dim_sellers'
+	lineageTag: f70635c7-3414-4ffb-83d3-67d267ffd2a7
+
+	column seller_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 61fcebb5-4882-4202-a5c1-5a463f83d790
+		summarizeBy: none
+		sourceColumn: seller_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_id
+		dataType: string
+		lineageTag: 3d30672d-aea0-4d87-8a70-625cec5689cb
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip_code_prefix
+		dataType: string
+		lineageTag: 11fbff37-e41c-45bd-b950-80e237402391
+		summarizeBy: none
+		sourceColumn: zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: d05c08b3-58b6-4b79-9d61-754c16d9f0c3
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 7c286f8c-ce59-4e93-ac99-f2d0c2dd91cd
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column geography_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: be2b1a72-89ac-4b7a-83a2-b79560963ce3
+		summarizeBy: none
+		sourceColumn: geography_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics dim_sellers' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "dim_sellers"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

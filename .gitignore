@@ -1,0 +1,48 @@
+# Operating system / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+~$*
+
+# Local database backups / dumps
+*.backup
+*.dump
+*.sql.gz
+*.tar
+
+# Intermediate/generated data (keep original files in data/raw/)
+data/processed/
+data/interim/
+data/temp/
+
+# Power BI Desktop binary/cache files
+*.pbit
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
+**/.pbi/editorSettings.json
+
+# Python cache (if Python is added later)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Raw Olist dataset - excluded from GitHub
+data/raw/*.csv

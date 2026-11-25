@@ -1,0 +1,82 @@
+table 'analytics dim_seller_geography'
+	lineageTag: 20b331f3-6e3f-495f-a0ce-42e5725972b9
+
+	column geography_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: b5a519a4-b774-479e-ae2c-133478da1d9f
+		summarizeBy: none
+		sourceColumn: geography_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column geography_natural_key
+		dataType: string
+		lineageTag: b3317817-e487-4c48-bb4a-ace2dbecedb9
+		summarizeBy: none
+		sourceColumn: geography_natural_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip_code_prefix
+		dataType: string
+		lineageTag: 822f1b65-098f-4860-a4fc-0893b818dc24
+		summarizeBy: none
+		sourceColumn: zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: caf63925-1b1c-4a30-8e47-ceb74c286c87
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 3b95f4dc-9aff-4312-addf-69f76c41518a
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: c1942a8b-bafd-49dd-ad9f-f900167d9796
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column longitude
+		dataType: double
+		lineageTag: 3d79f6b1-0e13-4b9c-bd34-2e4ba198d23b
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column coordinate_source
+		dataType: string
+		lineageTag: 06ea0882-82c8-4612-93a6-d3df2dc23ebd
+		summarizeBy: none
+		sourceColumn: coordinate_source
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics dim_seller_geography' = m
+		mode: import
+		source =
+				let
+				  Source = #"analytics dim_geography"
+				in
+				  Source
+
+	annotation PBI_ResultType = Table
+

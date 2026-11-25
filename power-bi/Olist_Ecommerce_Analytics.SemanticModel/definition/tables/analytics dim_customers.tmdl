@@ -1,0 +1,72 @@
+table 'analytics dim_customers'
+	lineageTag: c473407e-80dc-4f9d-81cf-64ec052b1a69
+
+	column customer_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: bf180491-0416-4487-b0c5-2086c280235c
+		summarizeBy: none
+		sourceColumn: customer_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: 936604c3-b722-4838-8a10-0886f71730fa
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_unique_id
+		dataType: string
+		lineageTag: fdf8c78d-d4c7-476b-979a-d379c47c2911
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip_code_prefix
+		dataType: string
+		lineageTag: fb1520bd-188c-416f-b661-bce232c3646c
+		summarizeBy: none
+		sourceColumn: zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 653f2db9-3152-4673-a906-94df7423aa42
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 437146bd-64aa-4239-bc01-440751c0eb7d
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column geography_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 0df3e687-4c41-4ce4-ac8c-2d791a8b647e
+		summarizeBy: none
+		sourceColumn: geography_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics dim_customers' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "dim_customers"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

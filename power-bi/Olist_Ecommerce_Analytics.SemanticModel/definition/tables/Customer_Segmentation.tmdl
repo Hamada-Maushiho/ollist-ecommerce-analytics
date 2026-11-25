@@ -1,0 +1,73 @@
+table Customer_Segmentation
+	lineageTag: b5c66374-e6f4-4a83-aa50-c1af8b114d90
+
+	measure 'GMV by Purchase Date' = ```
+			
+			CALCULATE(
+			    [Total GMV],
+			    USERELATIONSHIP(
+			        'analytics fact_orders'[purchase_date_sk],
+			        'analytics dim_date'[date_sk]
+			    )
+			)
+			
+			```
+		lineageTag: 630e1067-10eb-4a97-8ce1-eeae109855cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column customer_unique_id
+		lineageTag: 591755d4-efb4-4e0a-a438-adaeab11bfde
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: analytics dim_customers[customer_unique_id]
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderCount
+		formatString: 0
+		lineageTag: af4de67f-5877-4951-9d0b-8971c7b2b3eb
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [OrderCount]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Segment'
+		lineageTag: 6fe92923-1f00-44a0-9fff-47b7bfe2af7b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Customer Segment]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer_Segmentation = calculated
+		mode: import
+		source = ```
+				
+				ADDCOLUMNS(
+				    FILTER(
+				        ADDCOLUMNS(
+				            VALUES('analytics dim_customers'[customer_unique_id]),
+				            "OrderCount",
+				                CALCULATE(
+				                    DISTINCTCOUNT('analytics fact_orders'[order_sk]),
+				                    'analytics fact_orders'[order_status] = "delivered"
+				                )
+				        ),
+				        [OrderCount] > 0
+				    ),
+				    "Customer Segment",
+				        SWITCH(
+				            TRUE(),
+				            [OrderCount] = 1, "One-time",
+				            [OrderCount] <= 3, "Repeat",
+				            [OrderCount] <= 5, "Loyal",
+				            "High Frequency"
+				        )
+				)
+				
+				```
+
+	annotation PBI_Id = c987084384a24552b01c28fd6d5d1a55
+

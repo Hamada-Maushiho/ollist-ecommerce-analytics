@@ -1,0 +1,90 @@
+table 'analytics fact_payments'
+	lineageTag: cc155e05-93ff-4b50-9b06-980bd2701b1b
+
+	measure 'Total Payment Value' = ```
+			
+			CALCULATE(
+			    SUM('analytics fact_payments'[payment_value]),
+			    'analytics fact_payments'[is_valid_payment] = TRUE()
+			)
+			
+			```
+		lineageTag: 833b0c07-5163-4244-91aa-a9bef1bb3aa9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 98df7fa6-0c08-4fff-ab65-992e0e230eff
+		summarizeBy: sum
+		sourceColumn: payment_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 450fcd9d-3e2d-4a90-b55f-fbff089c6c46
+		summarizeBy: none
+		sourceColumn: order_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_type_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 992b801c-78a5-4a76-a489-d7f23b443b43
+		summarizeBy: none
+		sourceColumn: payment_type_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_sequential
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f0d22b1-af24-48d0-9252-32a88e63b404
+		summarizeBy: sum
+		sourceColumn: payment_sequential
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_installments
+		dataType: int64
+		formatString: 0
+		lineageTag: f3f994e0-2af6-4385-a2ee-8d940aacd9cb
+		summarizeBy: sum
+		sourceColumn: payment_installments
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_value
+		dataType: double
+		lineageTag: d87d2f76-87ba-4dcd-bab7-f48e7ee1b8b2
+		summarizeBy: sum
+		sourceColumn: payment_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_valid_payment
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: e6bdda50-cae8-4068-97be-63c66c337668
+		summarizeBy: none
+		sourceColumn: is_valid_payment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics fact_payments' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "fact_payments"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

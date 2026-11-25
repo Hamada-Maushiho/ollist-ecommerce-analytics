@@ -1,0 +1,70 @@
+table Customer_Acquisition
+	lineageTag: 537f88f9-10bc-4f9b-8541-ac3ec4f133d5
+
+	measure 'Total Reviews by Review Date' =
+			
+			CALCULATE(
+			    [Total Reviews],
+			    USERELATIONSHIP(
+			        'analytics fact_reviews'[review_date_sk],
+			        'analytics dim_date'[date_sk]
+			    )
+			)
+		formatString: 0
+		lineageTag: 10f725e5-9580-46ba-b0bc-7409ca5fbe9c
+
+	column customer_unique_id
+		lineageTag: 8e340dcd-1d79-4580-a339-fa89ebe691c6
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: analytics dim_customers[customer_unique_id]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'First Purchase Date'
+		formatString: General Date
+		lineageTag: a73735a4-674b-478d-b94a-62cd7f1a7289
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [First Purchase Date]
+
+		variation Variation
+			isDefault
+			relationship: a01c6e06-c7d2-4532-bcc0-bec879110710
+			defaultHierarchy: LocalDateTable_c989d43a-031c-47f3-8222-d157a54276d0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customer_Acquisition = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS(
+				    FILTER(
+				        VALUES('analytics dim_customers'[customer_unique_id]),
+				        NOT ISBLANK('analytics dim_customers'[customer_unique_id])
+				    ),
+				    "First Purchase Date",
+				        VAR CurrentCustomer = 'analytics dim_customers'[customer_unique_id]
+				        RETURN
+				            MINX(
+				                FILTER(
+				                    ALL('analytics fact_orders'),
+				                    'analytics fact_orders'[order_status] = "delivered"
+				                    &&
+				                    LOOKUPVALUE(
+				                        'analytics dim_customers'[customer_unique_id],
+				                        'analytics dim_customers'[customer_sk],
+				                        'analytics fact_orders'[customer_sk]
+				                    ) = CurrentCustomer
+				                ),
+				                LOOKUPVALUE(
+				                    'analytics dim_date'[full_date],
+				                    'analytics dim_date'[date_sk],
+				                    'analytics fact_orders'[purchase_date_sk]
+				                )
+				            )
+				)
+
+	annotation PBI_Id = cfbcd2e1e7d740d29bc9b2850e0bfa98
+

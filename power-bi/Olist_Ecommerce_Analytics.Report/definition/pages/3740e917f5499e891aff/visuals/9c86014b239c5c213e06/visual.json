@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "9c86014b239c5c213e06",
+  "position": {
+    "x": 28,
+    "y": 382,
+    "z": 30000,
+    "width": 612,
+    "height": 208,
+    "tabOrder": 30000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "analytics dim_products"
+                    }
+                  },
+                  "Property": "product_category_english"
+                }
+              },
+              "queryRef": "analytics dim_products.product_category_english",
+              "nativeQueryRef": "product_category_english",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "analytics fact_order_items"
+                    }
+                  },
+                  "Property": "Total GMV"
+                }
+              },
+              "queryRef": "analytics fact_order_items.Total GMV",
+              "nativeQueryRef": "Total GMV"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "analytics fact_order_items"
+                  }
+                },
+                "Property": "Total GMV"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3b40069b05e1870fdfe5",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "analytics dim_products"
+              }
+            },
+            "Property": "product_category_english"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "be024ce800eed79db912",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "analytics fact_order_items"
+              }
+            },
+            "Property": "Total GMV"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

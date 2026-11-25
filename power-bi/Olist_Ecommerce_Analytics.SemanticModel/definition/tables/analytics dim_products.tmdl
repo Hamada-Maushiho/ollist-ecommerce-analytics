@@ -1,0 +1,128 @@
+table 'analytics dim_products'
+	lineageTag: d4bc9a13-57e9-4bd4-8edb-bd7bba352dac
+
+	column product_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 553338ca-2438-40ce-a21b-fd43483fc2f9
+		summarizeBy: none
+		sourceColumn: product_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: string
+		lineageTag: 365b5633-fbad-4f63-a775-93871810140d
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_name
+		dataType: string
+		lineageTag: 95f6b8b0-7d1e-460b-a818-5c6c86f7c140
+		summarizeBy: none
+		sourceColumn: product_category_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_english
+		dataType: string
+		lineageTag: 3b17353d-c1b1-4238-97cc-5ef8b7e786aa
+		summarizeBy: none
+		sourceColumn: product_category_english
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name_length
+		dataType: int64
+		formatString: 0
+		lineageTag: 45b80f91-18f3-4fe1-b39c-5f8947f83140
+		summarizeBy: none
+		sourceColumn: product_name_length
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_description_length
+		dataType: int64
+		formatString: 0
+		lineageTag: ab7ff58e-26b2-47d6-8eb1-01a72434fdec
+		summarizeBy: none
+		sourceColumn: product_description_length
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_photos_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 179464d6-ffd7-4cc9-bdc4-f21d2a24fbaa
+		summarizeBy: none
+		sourceColumn: product_photos_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_weight_g
+		dataType: int64
+		formatString: 0
+		lineageTag: 66078b48-4f70-40aa-bc2f-f202afaec5d5
+		summarizeBy: none
+		sourceColumn: product_weight_g
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_length_cm
+		dataType: int64
+		formatString: 0
+		lineageTag: b2b0a189-8024-49b8-85c6-b5e96f3a7a6e
+		summarizeBy: none
+		sourceColumn: product_length_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_height_cm
+		dataType: int64
+		formatString: 0
+		lineageTag: 231a63ec-63bf-4dcf-8a62-59594ab2d4a1
+		summarizeBy: none
+		sourceColumn: product_height_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_width_cm
+		dataType: int64
+		formatString: 0
+		lineageTag: b9eda162-66c2-4d34-9051-1e17575a371c
+		summarizeBy: none
+		sourceColumn: product_width_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column missing_category
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3ce85803-3867-4dab-aeed-5a917e53979c
+		summarizeBy: none
+		sourceColumn: missing_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column weight_incomplete_or_zero
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 74c5b881-f9b2-4a82-bb60-e137f82a7156
+		summarizeBy: none
+		sourceColumn: weight_incomplete_or_zero
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'analytics dim_products' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost:5432", "ecommerce_analytic"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "dim_products"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,123 @@
+relationship f9928c91-53af-4809-8f5e-d86ecf5f24f8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'analytics dim_date'.full_date
+	toColumn: LocalDateTable_3c694cc9-9af4-463e-85c6-e37f168dafb0.Date
+
+relationship 40d66d32-27ae-4f20-bf1d-d60841200f4f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'analytics fact_reviews'.review_creation_date
+	toColumn: LocalDateTable_52e47de1-bc63-4445-8d2b-494be792b582.Date
+
+relationship 334e38b1-95d6-4472-af3a-3252387bf70c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'analytics fact_reviews'.review_answer_timestamp
+	toColumn: LocalDateTable_e51e0adb-195d-4288-abe1-ee9bdbce2f29.Date
+
+relationship f6e11852-de4c-431f-9208-63dc79c06a67
+	isActive: false
+	fromColumn: 'analytics fact_order_items'.shipping_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship cc3e1217-2c1e-4695-8074-25762a949705
+	fromColumn: 'analytics fact_order_items'.product_sk
+	toColumn: 'analytics dim_products'.product_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship 00b7d7a2-c26f-42b3-913c-56ac4e29c07e
+	fromColumn: 'analytics fact_order_items'.seller_sk
+	toColumn: 'analytics dim_sellers'.seller_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship e1b5193e-94a5-48eb-8ca7-9c9e40b8987f
+	fromColumn: 'analytics fact_order_items'.order_sk
+	toColumn: 'analytics fact_orders'.order_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship 0341fb48-17c6-4f09-a316-6c83c55b7aeb
+	isActive: false
+	fromColumn: 'analytics fact_orders'.approval_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship 10fef2c8-c9c4-4172-904c-f42fa58dfb8d
+	isActive: false
+	fromColumn: 'analytics fact_orders'.carrier_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship b3f412a3-bc08-412f-9a99-ac78375d14a9
+	isActive: false
+	fromColumn: 'analytics fact_orders'.delivery_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship 257e76ce-4999-43a2-bdae-479e011fc94f
+	isActive: false
+	fromColumn: 'analytics fact_orders'.estimated_delivery_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship 61ff7264-ee58-47f9-a297-e88b79a742bc
+	fromColumn: 'analytics fact_orders'.purchase_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship 2ea3f574-45c9-4611-99d4-b2af0e76245a
+	fromColumn: 'analytics fact_payments'.payment_type_sk
+	toColumn: 'analytics dim_payment_type'.payment_type_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship e5e7f204-c6f0-4a63-b18d-41fe1ce11e60
+	fromColumn: 'analytics fact_payments'.order_sk
+	toColumn: 'analytics fact_orders'.order_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship e13662b4-18d4-48ef-b65f-9ed00e15810a
+	isActive: false
+	fromColumn: 'analytics fact_reviews'.review_answer_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship bb3a3a95-95f5-4bb1-a142-625f81d14129
+	isActive: false
+	fromColumn: 'analytics fact_reviews'.review_date_sk
+	toColumn: 'analytics dim_date'.date_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship e3c0b510-634a-44b7-bbfb-7e548c4f3a15
+	fromColumn: 'analytics fact_reviews'.order_sk
+	toColumn: 'analytics fact_orders'.order_sk
+
+	annotation PBI_IsFromSource = FS
+
+relationship 64eb080d-fea4-7230-432a-aa362146fad3
+	fromColumn: 'analytics dim_customers'.geography_sk
+	toColumn: 'analytics dim_customer_geography'.geography_sk
+
+relationship 28bc4af4-445f-df60-e932-2a80688316c6
+	fromColumn: 'analytics dim_sellers'.geography_sk
+	toColumn: 'analytics dim_seller_geography'.geography_sk
+
+relationship 0171b0b0-4b99-b596-6334-c44cfd97db2e
+	fromColumn: 'analytics fact_orders'.customer_sk
+	toColumn: 'analytics dim_customers'.customer_sk
+
+relationship a01c6e06-c7d2-4532-bcc0-bec879110710
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Customer_Acquisition.'First Purchase Date'
+	toColumn: LocalDateTable_c989d43a-031c-47f3-8222-d157a54276d0.Date
+
